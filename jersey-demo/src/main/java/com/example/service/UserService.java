@@ -31,4 +31,12 @@ public class UserService {
     public void delete(int id){
         users.remove(id);
     }
+
+    public List<User> searchByName(String name){
+        return users
+                .values()
+                .stream()
+                .filter(u -> u.getName().equalsIgnoreCase(name))
+                .toList();
+    }
 }
