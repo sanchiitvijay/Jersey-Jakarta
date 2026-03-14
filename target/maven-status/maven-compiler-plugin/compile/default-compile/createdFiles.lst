@@ -1,5 +1,8 @@
 com/example/config/MyApplication.class
 com/example/model/User.class
+com/example/exception/UserNotFoundException.class
+com/example/exception/UserNotFoundMapper.class
+com/example/exception/GenericExceptionMapper.class
 com/example/resource/UserResource.class
 com/example/Main.class
 com/example/resource/HelloResource.class
