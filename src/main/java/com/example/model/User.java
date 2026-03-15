@@ -1,7 +1,11 @@
 package com.example.model;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class User {
     private int id;
+
+    @NotBlank(message = "Name cannot be blank")
     private String name;
 
     public User(){}

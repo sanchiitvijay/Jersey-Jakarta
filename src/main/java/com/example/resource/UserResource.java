@@ -6,6 +6,7 @@ import com.example.model.User;
 import com.example.service.UserService;
 
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -45,7 +46,7 @@ public class UserResource {
     }
 
     @POST
-    public Response createUser(User user) {
+    public Response createUser(@Valid User user) {
 
         User created = userService.create(user);
 
