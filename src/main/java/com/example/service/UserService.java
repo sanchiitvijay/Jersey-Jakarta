@@ -2,44 +2,78 @@ package com.example.service;
 
 import java.util.*;
 
+import com.example.config.JPAUtil;
 import com.example.model.User;
 
 import jakarta.inject.Singleton;
+import jakarta.persistence.EntityManager;
 
 @Singleton
 public class UserService {
-    private static Map<Integer, User> users = new HashMap<>();
-    private static int counter = 1;
 
     public List <User> getAll(){
-        return new ArrayList<>(users.values());
+
+        EntityManager em = JPAUtil.getEntityManager();
+
+        List<User> userList = em.createQuery("from User", User.class).getResultList();
+
+        em.close();
+        return userList;
     }
 
     public User getById(int id){
-        return users.get(id);
+        EntityManager em = JPAUtil.getEntityManager();
+        User user = em.find(User.class, id);
+        em.close();
+        return user;
     }
 
     public User create(User user){
-        user.setId(counter++);
-        users.put(user.getId(), user);
+        EntityManager em = JPAUtil.getEntityManager();
+        em.getTransaction().begin();
+        em.persist(user);
+        em.getTransaction().commit();
+        em.close();
         return user;
     }
 
     public User update(int id, User user){
-        user.setId(id);
-        users.put(id, user);
-        return user;
+        EntityManager em = JPAUtil.getEntityManager();
+        em.getTransaction().begin();
+        User existing = em.find(User.class, id);
+        if (existing == null) {
+            em.getTransaction().commit();
+            em.close();
+            return null;
+        }
+        existing.setName(user.getName());
+        em.merge(existing);
+        em.getTransaction().commit();
+        em.close();
+        return existing;
     }
 
     public void delete(int id){
-        users.remove(id);
+        EntityManager em = JPAUtil.getEntityManager();
+
+        em.getTransaction().begin();
+
+        User user = em.find(User.class,id);
+
+        if(user!=null){
+            em.remove(user);
+        }
+
+        em.getTransaction().commit();
+
+        em.close();
     }
 
     public List<User> searchByName(String name){
-        return users
-                .values()
-                .stream()
-                .filter(u -> u.getName().equalsIgnoreCase(name))
-                .toList();
+
+        EntityManager em = JPAUtil.getEntityManager();
+        List<User> users = em.createQuery("from User", User.class).getResultList();
+        em.close();
+        return users;
     }
 }
