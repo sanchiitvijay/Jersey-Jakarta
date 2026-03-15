@@ -4,6 +4,9 @@ import java.util.*;
 
 import com.example.model.User;
 
+import jakarta.inject.Singleton;
+
+@Singleton
 public class UserService {
     private static Map<Integer, User> users = new HashMap<>();
     private static int counter = 1;

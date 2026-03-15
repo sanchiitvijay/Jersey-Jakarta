@@ -5,6 +5,7 @@ import java.util.List;
 import com.example.model.User;
 import com.example.service.UserService;
 
+import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -14,7 +15,8 @@ import jakarta.ws.rs.core.Response;
 @Consumes(MediaType.APPLICATION_JSON)
 public class UserResource {
 
-    private final UserService userService = new UserService();
+    @Inject
+    UserService userService;
 
     @GET
     public List<User> getUsers() {
