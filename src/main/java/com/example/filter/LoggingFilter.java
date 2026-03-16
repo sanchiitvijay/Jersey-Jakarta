@@ -2,6 +2,9 @@ package com.example.filter;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import jakarta.ws.rs.container.ContainerRequestFilter;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.ext.Provider;
@@ -9,11 +12,12 @@ import jakarta.ws.rs.ext.Provider;
 @Provider
 public class LoggingFilter implements ContainerRequestFilter{
     
-    @Override
-    public void filter(ContainerRequestContext ctx) throws IOException {
-        String method = ctx.getMethod();
-        String path = ctx.getUriInfo().getPath();
+    private static final Logger log =
+            LoggerFactory.getLogger(LoggingFilter.class);
 
-        System.out.println("Incoming request: " + method + " " + path);
+    public void filter(ContainerRequestContext ctx) throws IOException {
+        log.info("Incoming request {} {}",
+                ctx.getMethod(),
+                ctx.getUriInfo().getPath());
     }
 }
